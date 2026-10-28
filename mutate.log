@@ -1,0 +1,38 @@
+# 1. draft expected fields
+vector   field             mutated to             exit  runner says
+AP-26    failed_height     972145                 1     DIFF failed_height: expected 972145 got 972141 (differs)  [caught] failed_height: the claimed block instead of the failing one
+AP-26    failed_height     "972141"               1     DIFF failed_height: expected "972141" got 972141 (differs)  [caught] failed_height: right number as a string (type)
+AP-27    proof_heights     [972145]               1     DIFF proof_heights: expected [972145] got [972140, 972145] (differs)  [caught] proof_heights: the rewritten height dropped
+AP-27    proof_heights     [972145, 972140]       1     DIFF proof_heights: expected [972145, 972140] got [972140, 972145] (differs)  [caught] proof_heights: right members, wrong order
+AP-25    verified_heights  [972145]               1     DIFF verified_heights: expected [972145] got [972141, 972145] (differs); SUPP DIFF verified_heights: expected [972141, 972145] got [972145] (supplemental contradicts the draft's expected value)  [caught] verified_heights added: only the claimed block
+AP-24    verified_heights  [972141, 972145]       1     DIFF verified_heights: expected [972141, 972145] got [972145] (differs); SUPP DIFF verified_heights: expected [972145] got [972141, 972145] (supplemental contradicts the draft's expected value)  [caught] verified_heights added: unverified height included
+AP-28    set_checked       true                   1     DIFF set_checked: expected true got false (differs)  [caught] set_checked: true after a select error
+AP-28    set_checked       0                      1     DIFF set_checked: expected 0 got false (differs)  [caught] set_checked: 0 instead of false (type)
+AP-01    set_checked       false                  1     DIFF set_checked: expected false got true (differs)  [caught] set_checked: false when the comparison ran
+AP-24    earliest_height   972141                 1     DIFF earliest_height: expected 972141 got 972145 (differs)  [caught] earliest_height: the draft 1 unverified bound
+AP-27    earliest_height   972140                 1     DIFF earliest_height: expected 972140 got 972145 (differs)  [caught] earliest_height: the probe's rewritten height
+AP-01    result            "root_mismatch"        1     DIFF result: expected "root_mismatch" got "anchored" (differs)  [caught] result code on an object expected
+AP-13    result            "header_unavailable"   1     DIFF result: expected "header_unavailable" got "root_mismatch" (differs)  [caught] result code on a bare-string expected
+AP-28    result            "proof_sha_mismatch"   1     DIFF result: expected "proof_sha_mismatch" got "select_out_of_range" (differs)  [caught] result: AP-28's second fault, wrong order
+AP-23    failed_height     972141                 1     DIFF failed_height: expected 972141 got "<absent>" (missing)  [caught] failed_height added on an anchored vector
+AP-15    earliest_heigth   972677                 1     DIFF earliest_heigth: expected 972677 got "<absent>" (expected field outside the draft 1.1 contract)  [caught] misspelled field outside the contract
+# 2. supplemental.json assertions (ours)
+AP-25    verified_heights  [972145]               1     SUPP DIFF verified_heights: expected [972145] got [972141, 972145] (differs)  [caught] our pin: AP-25 verified_heights without 972141
+AP-25    proof_heights     [972141]               1     SUPP DIFF proof_heights: expected [972141] got [972141, 972145] (differs)  [caught] our pin: AP-25 proof_heights without 972145
+AP-06    set_checked       false                  1     SUPP DIFF set_checked: expected false got true (differs)  [caught] our pin: set_checked false after the comparison ran
+AP-02    set_checked       true                   1     SUPP DIFF set_checked: expected true got false (differs)  [caught] our pin: set_checked true on malformed
+AP-13    failed_height     972228                 1     SUPP DIFF failed_height: expected 972228 got 972227 (differs)  [caught] our pin: failed_height off by one
+AP-01    set_checked       false                  1     SUPP DIFF set_checked: expected false got true (differs); SUPP DIFF set_checked: expected false got true (supplemental contradicts the draft's expected value)  [caught] our pin contradicting a field the draft already pins
+# 3. reader.py mutants
+R1       exit 1, failing AP-06,AP-16,AP-17, without supplemental exit 0  [caught] review mutant: set_checked forced false on set_digest_mismatch
+         AP-06 SUPP DIFF set_checked: expected true got false (differs)
+R2       exit 1, failing AP-25, without supplemental exit 1  [caught] review mutant: AP-25 height lists reduced to the minimum
+         AP-25 SUPP DIFF proof_heights: expected [972141, 972145] got [972141] (differs)
+         AP-25 SUPP DIFF verified_heights: expected [972141, 972145] got [972141] (differs)
+         AP-25 CONTRACT proof_heights [972141], the proof bytes name [972141, 972145]
+         AP-25 CONTRACT verified_heights [972141], expected every proof height with a supplied header [972141, 972145]
+R3       exit 1, failing AP-02,AP-03,AP-04,AP-20,AP-21,AP-22, without supplemental exit 0  [caught] set_checked true on malformed
+         AP-02 SUPP DIFF set_checked: expected false got true (differs)
+# controls
+control  -                 null                   0     passed 28/28, blob errors none  [pass] unmodified copy
+AP-25    verified_heights  [972141, 972145]       0     passed 28/28, blob errors none  [pass] verified_heights added with the right value

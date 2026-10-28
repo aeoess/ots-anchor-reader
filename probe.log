@@ -1,0 +1,9 @@
+untampered proof sha256 58fa0262f86d0e9237175cc6a326e3e4e5b15317fd549479658fec5aebd62d97
+rewritten proof sha256  76ee00041a1b9447ffa82cd064cfa818247ae0626e60ffc599e639f97acdfcc4
+byte-identical to catalog AP-27 blob: True
+P1 rewritten proof, only 972145 supplied: ok
+  got  {"earliest_height": 972145, "proof_heights": [972140, 972145], "result": "anchored", "set_checked": true, "verified_heights": [972145]}
+P2 rewritten proof, wrong root supplied for 972140: ok
+  got  {"failed_height": 972140, "result": "root_mismatch", "set_checked": true}
+P3 rewritten proof, 972141's real root supplied under the key 972140: ok
+  got  {"earliest_height": 972140, "proof_heights": [972140, 972145], "result": "anchored", "set_checked": true, "verified_heights": [972140, 972145]}

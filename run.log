@@ -1,0 +1,60 @@
+vectors vectors.json sha256 0b0b3efb16d230825610ad7cf501ecc0a0bfdaa3d6f182c6e2446957e22fef84 (draft 1.1)
+reader.py sha256 24a11a9e84a9ea691606cd1d532a3078009fd59553e9789d8e1c529d7e8dfeef, Python 3.14.6
+supplemental.json sha256 9304f62bf191e79b46ae654d19faff25191e9ba4f209c288a2b24a7c812a1de4, 34 assertions (ours, not the draft's)
+AP-01  ok   result=anchored               compared=earliest_height,result,set_checked supplemental=proof_heights,verified_heights
+       got {"earliest_height": 972227, "proof_heights": [972227], "set_checked": true, "verified_heights": [972227]}
+AP-02  ok   result=malformed              compared=result supplemental=set_checked
+       got {"set_checked": false}
+AP-03  ok   result=malformed              compared=result supplemental=set_checked
+       got {"set_checked": false}
+AP-04  ok   result=malformed              compared=result supplemental=set_checked
+       got {"set_checked": false}
+AP-05  ok   result=unsupported_mechanism  compared=result supplemental=set_checked
+       got {"set_checked": false}
+AP-06  ok   result=set_digest_mismatch    compared=result supplemental=set_checked
+       got {"set_checked": true}
+AP-07  ok   result=proof_sha_mismatch     compared=result supplemental=set_checked
+       got {"set_checked": true}
+AP-08  ok   result=proof_unparseable      compared=result supplemental=set_checked
+       got {"set_checked": true}
+AP-09  ok   result=proof_for_other_digest compared=result supplemental=set_checked
+       got {"set_checked": true}
+AP-10  ok   result=pending                compared=result supplemental=set_checked
+       got {"set_checked": true}
+AP-11  ok   result=height_not_in_proof    compared=result supplemental=set_checked
+       got {"set_checked": true}
+AP-12  ok   result=header_unavailable     compared=result supplemental=set_checked
+       got {"set_checked": true}
+AP-13  ok   result=root_mismatch          compared=result supplemental=failed_height,set_checked
+       got {"failed_height": 972227, "set_checked": true}
+AP-14  ok   result=root_mismatch          compared=result supplemental=failed_height,set_checked
+       got {"failed_height": 972227, "set_checked": true}
+AP-15  ok   result=anchored               compared=earliest_height,result,set_checked supplemental=proof_heights,verified_heights
+       got {"earliest_height": 972677, "proof_heights": [972677], "set_checked": true, "verified_heights": [972677]}
+AP-16  ok   result=set_digest_mismatch    compared=result supplemental=set_checked
+       got {"set_checked": true}
+AP-17  ok   result=set_digest_mismatch    compared=result supplemental=set_checked
+       got {"set_checked": true}
+AP-18  ok   result=select_out_of_range    compared=result supplemental=set_checked
+       got {"set_checked": false}
+AP-19  ok   result=unsupported_select     compared=result supplemental=set_checked
+       got {"set_checked": false}
+AP-20  ok   result=malformed              compared=result supplemental=set_checked
+       got {"set_checked": false}
+AP-21  ok   result=malformed              compared=result supplemental=set_checked
+       got {"set_checked": false}
+AP-22  ok   result=malformed              compared=result supplemental=set_checked
+       got {"set_checked": false}
+AP-23  ok   result=anchored               compared=earliest_height,result,set_checked supplemental=proof_heights,verified_heights
+       got {"earliest_height": 972141, "proof_heights": [972141, 972145], "set_checked": true, "verified_heights": [972141]}
+AP-24  ok   result=anchored               compared=earliest_height,result,set_checked supplemental=proof_heights,verified_heights
+       got {"earliest_height": 972145, "proof_heights": [972141, 972145], "set_checked": true, "verified_heights": [972145]}
+AP-25  ok   result=anchored               compared=earliest_height,result,set_checked supplemental=proof_heights,verified_heights
+       got {"earliest_height": 972141, "proof_heights": [972141, 972145], "set_checked": true, "verified_heights": [972141, 972145]}
+AP-26  ok   result=root_mismatch          compared=failed_height,result supplemental=set_checked
+       got {"failed_height": 972141, "set_checked": true}
+AP-27  ok   result=anchored               compared=earliest_height,proof_heights,result,set_checked supplemental=verified_heights
+       got {"earliest_height": 972145, "proof_heights": [972140, 972145], "set_checked": true, "verified_heights": [972145]}
+AP-28  ok   result=select_out_of_range    compared=result,set_checked supplemental=-
+       got {"set_checked": false}
+passed 28/28, blob errors none
