@@ -1,0 +1,797 @@
+{
+ "all_ok": true,
+ "blob_sha256_errors": [],
+ "passed": 28,
+ "python": "3.13.18",
+ "reader_sha256": "146d0bbda9c8982b7cfa89915cce27cdf9a2d909f29d5d4ae2a46b23f312ec6d",
+ "run_all_sha256": "0757af1f79cc534a72b4dde67080a91b583f34c028ba90a262224dead0436961",
+ "supplemental_errors": [],
+ "supplemental_field_count": 34,
+ "supplemental_file": "supplemental.json",
+ "supplemental_sha256": "9304f62bf191e79b46ae654d19faff25191e9ba4f209c288a2b24a7c812a1de4",
+ "total": 28,
+ "vectors": [
+  {
+   "compared_fields": [
+    "earliest_height",
+    "result",
+    "set_checked"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "earliest_height": 972227,
+    "result": "anchored",
+    "set_checked": true
+   },
+   "field_diffs": [],
+   "got": {
+    "earliest_height": 972227,
+    "proof_heights": [
+     972227
+    ],
+    "result": "anchored",
+    "set_checked": true,
+    "verified_heights": [
+     972227
+    ]
+   },
+   "id": "AP-01",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {
+    "proof_heights": [
+     972227
+    ],
+    "verified_heights": [
+     972227
+    ]
+   },
+   "supplemental_fields": [
+    "proof_heights",
+    "verified_heights"
+   ]
+  },
+  {
+   "compared_fields": [
+    "result"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "result": "malformed"
+   },
+   "field_diffs": [],
+   "got": {
+    "result": "malformed",
+    "set_checked": false
+   },
+   "id": "AP-02",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {
+    "set_checked": false
+   },
+   "supplemental_fields": [
+    "set_checked"
+   ]
+  },
+  {
+   "compared_fields": [
+    "result"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "result": "malformed"
+   },
+   "field_diffs": [],
+   "got": {
+    "result": "malformed",
+    "set_checked": false
+   },
+   "id": "AP-03",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {
+    "set_checked": false
+   },
+   "supplemental_fields": [
+    "set_checked"
+   ]
+  },
+  {
+   "compared_fields": [
+    "result"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "result": "malformed"
+   },
+   "field_diffs": [],
+   "got": {
+    "result": "malformed",
+    "set_checked": false
+   },
+   "id": "AP-04",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {
+    "set_checked": false
+   },
+   "supplemental_fields": [
+    "set_checked"
+   ]
+  },
+  {
+   "compared_fields": [
+    "result"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "result": "unsupported_mechanism"
+   },
+   "field_diffs": [],
+   "got": {
+    "result": "unsupported_mechanism",
+    "set_checked": false
+   },
+   "id": "AP-05",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {
+    "set_checked": false
+   },
+   "supplemental_fields": [
+    "set_checked"
+   ]
+  },
+  {
+   "compared_fields": [
+    "result"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "result": "set_digest_mismatch"
+   },
+   "field_diffs": [],
+   "got": {
+    "result": "set_digest_mismatch",
+    "set_checked": true
+   },
+   "id": "AP-06",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {
+    "set_checked": true
+   },
+   "supplemental_fields": [
+    "set_checked"
+   ]
+  },
+  {
+   "compared_fields": [
+    "result"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "result": "proof_sha_mismatch"
+   },
+   "field_diffs": [],
+   "got": {
+    "result": "proof_sha_mismatch",
+    "set_checked": true
+   },
+   "id": "AP-07",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {
+    "set_checked": true
+   },
+   "supplemental_fields": [
+    "set_checked"
+   ]
+  },
+  {
+   "compared_fields": [
+    "result"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "result": "proof_unparseable"
+   },
+   "field_diffs": [],
+   "got": {
+    "result": "proof_unparseable",
+    "set_checked": true
+   },
+   "id": "AP-08",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {
+    "set_checked": true
+   },
+   "supplemental_fields": [
+    "set_checked"
+   ]
+  },
+  {
+   "compared_fields": [
+    "result"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "result": "proof_for_other_digest"
+   },
+   "field_diffs": [],
+   "got": {
+    "result": "proof_for_other_digest",
+    "set_checked": true
+   },
+   "id": "AP-09",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {
+    "set_checked": true
+   },
+   "supplemental_fields": [
+    "set_checked"
+   ]
+  },
+  {
+   "compared_fields": [
+    "result"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "result": "pending"
+   },
+   "field_diffs": [],
+   "got": {
+    "result": "pending",
+    "set_checked": true
+   },
+   "id": "AP-10",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {
+    "set_checked": true
+   },
+   "supplemental_fields": [
+    "set_checked"
+   ]
+  },
+  {
+   "compared_fields": [
+    "result"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "result": "height_not_in_proof"
+   },
+   "field_diffs": [],
+   "got": {
+    "proof_heights": [
+     972227
+    ],
+    "result": "height_not_in_proof",
+    "set_checked": true
+   },
+   "id": "AP-11",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {
+    "set_checked": true
+   },
+   "supplemental_fields": [
+    "set_checked"
+   ]
+  },
+  {
+   "compared_fields": [
+    "result"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "result": "header_unavailable"
+   },
+   "field_diffs": [],
+   "got": {
+    "proof_heights": [
+     972227
+    ],
+    "result": "header_unavailable",
+    "set_checked": true
+   },
+   "id": "AP-12",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {
+    "set_checked": true
+   },
+   "supplemental_fields": [
+    "set_checked"
+   ]
+  },
+  {
+   "compared_fields": [
+    "result"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "result": "root_mismatch"
+   },
+   "field_diffs": [],
+   "got": {
+    "failed_height": 972227,
+    "proof_heights": [
+     972227
+    ],
+    "result": "root_mismatch",
+    "set_checked": true
+   },
+   "id": "AP-13",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {
+    "failed_height": 972227,
+    "set_checked": true
+   },
+   "supplemental_fields": [
+    "failed_height",
+    "set_checked"
+   ]
+  },
+  {
+   "compared_fields": [
+    "result"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "result": "root_mismatch"
+   },
+   "field_diffs": [],
+   "got": {
+    "failed_height": 972227,
+    "proof_heights": [
+     972227
+    ],
+    "result": "root_mismatch",
+    "set_checked": true
+   },
+   "id": "AP-14",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {
+    "failed_height": 972227,
+    "set_checked": true
+   },
+   "supplemental_fields": [
+    "failed_height",
+    "set_checked"
+   ]
+  },
+  {
+   "compared_fields": [
+    "earliest_height",
+    "result",
+    "set_checked"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "earliest_height": 972677,
+    "result": "anchored",
+    "set_checked": true
+   },
+   "field_diffs": [],
+   "got": {
+    "earliest_height": 972677,
+    "proof_heights": [
+     972677
+    ],
+    "result": "anchored",
+    "set_checked": true,
+    "verified_heights": [
+     972677
+    ]
+   },
+   "id": "AP-15",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {
+    "proof_heights": [
+     972677
+    ],
+    "verified_heights": [
+     972677
+    ]
+   },
+   "supplemental_fields": [
+    "proof_heights",
+    "verified_heights"
+   ]
+  },
+  {
+   "compared_fields": [
+    "result"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "result": "set_digest_mismatch"
+   },
+   "field_diffs": [],
+   "got": {
+    "result": "set_digest_mismatch",
+    "set_checked": true
+   },
+   "id": "AP-16",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {
+    "set_checked": true
+   },
+   "supplemental_fields": [
+    "set_checked"
+   ]
+  },
+  {
+   "compared_fields": [
+    "result"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "result": "set_digest_mismatch"
+   },
+   "field_diffs": [],
+   "got": {
+    "result": "set_digest_mismatch",
+    "set_checked": true
+   },
+   "id": "AP-17",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {
+    "set_checked": true
+   },
+   "supplemental_fields": [
+    "set_checked"
+   ]
+  },
+  {
+   "compared_fields": [
+    "result"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "result": "select_out_of_range"
+   },
+   "field_diffs": [],
+   "got": {
+    "result": "select_out_of_range",
+    "set_checked": false
+   },
+   "id": "AP-18",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {
+    "set_checked": false
+   },
+   "supplemental_fields": [
+    "set_checked"
+   ]
+  },
+  {
+   "compared_fields": [
+    "result"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "result": "unsupported_select"
+   },
+   "field_diffs": [],
+   "got": {
+    "result": "unsupported_select",
+    "set_checked": false
+   },
+   "id": "AP-19",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {
+    "set_checked": false
+   },
+   "supplemental_fields": [
+    "set_checked"
+   ]
+  },
+  {
+   "compared_fields": [
+    "result"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "result": "malformed"
+   },
+   "field_diffs": [],
+   "got": {
+    "result": "malformed",
+    "set_checked": false
+   },
+   "id": "AP-20",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {
+    "set_checked": false
+   },
+   "supplemental_fields": [
+    "set_checked"
+   ]
+  },
+  {
+   "compared_fields": [
+    "result"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "result": "malformed"
+   },
+   "field_diffs": [],
+   "got": {
+    "result": "malformed",
+    "set_checked": false
+   },
+   "id": "AP-21",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {
+    "set_checked": false
+   },
+   "supplemental_fields": [
+    "set_checked"
+   ]
+  },
+  {
+   "compared_fields": [
+    "result"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "result": "malformed"
+   },
+   "field_diffs": [],
+   "got": {
+    "result": "malformed",
+    "set_checked": false
+   },
+   "id": "AP-22",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {
+    "set_checked": false
+   },
+   "supplemental_fields": [
+    "set_checked"
+   ]
+  },
+  {
+   "compared_fields": [
+    "earliest_height",
+    "result",
+    "set_checked"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "earliest_height": 972141,
+    "result": "anchored",
+    "set_checked": true
+   },
+   "field_diffs": [],
+   "got": {
+    "earliest_height": 972141,
+    "proof_heights": [
+     972141,
+     972145
+    ],
+    "result": "anchored",
+    "set_checked": true,
+    "verified_heights": [
+     972141
+    ]
+   },
+   "id": "AP-23",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {
+    "proof_heights": [
+     972141,
+     972145
+    ],
+    "verified_heights": [
+     972141
+    ]
+   },
+   "supplemental_fields": [
+    "proof_heights",
+    "verified_heights"
+   ]
+  },
+  {
+   "compared_fields": [
+    "earliest_height",
+    "result",
+    "set_checked"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "earliest_height": 972145,
+    "result": "anchored",
+    "set_checked": true
+   },
+   "field_diffs": [],
+   "got": {
+    "earliest_height": 972145,
+    "proof_heights": [
+     972141,
+     972145
+    ],
+    "result": "anchored",
+    "set_checked": true,
+    "verified_heights": [
+     972145
+    ]
+   },
+   "id": "AP-24",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {
+    "proof_heights": [
+     972141,
+     972145
+    ],
+    "verified_heights": [
+     972145
+    ]
+   },
+   "supplemental_fields": [
+    "proof_heights",
+    "verified_heights"
+   ]
+  },
+  {
+   "compared_fields": [
+    "earliest_height",
+    "result",
+    "set_checked"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "earliest_height": 972141,
+    "result": "anchored",
+    "set_checked": true
+   },
+   "field_diffs": [],
+   "got": {
+    "earliest_height": 972141,
+    "proof_heights": [
+     972141,
+     972145
+    ],
+    "result": "anchored",
+    "set_checked": true,
+    "verified_heights": [
+     972141,
+     972145
+    ]
+   },
+   "id": "AP-25",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {
+    "proof_heights": [
+     972141,
+     972145
+    ],
+    "verified_heights": [
+     972141,
+     972145
+    ]
+   },
+   "supplemental_fields": [
+    "proof_heights",
+    "verified_heights"
+   ]
+  },
+  {
+   "compared_fields": [
+    "failed_height",
+    "result"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "failed_height": 972141,
+    "result": "root_mismatch"
+   },
+   "field_diffs": [],
+   "got": {
+    "failed_height": 972141,
+    "proof_heights": [
+     972141,
+     972145
+    ],
+    "result": "root_mismatch",
+    "set_checked": true
+   },
+   "id": "AP-26",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {
+    "set_checked": true
+   },
+   "supplemental_fields": [
+    "set_checked"
+   ]
+  },
+  {
+   "compared_fields": [
+    "earliest_height",
+    "proof_heights",
+    "result",
+    "set_checked"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "earliest_height": 972145,
+    "proof_heights": [
+     972140,
+     972145
+    ],
+    "result": "anchored",
+    "set_checked": true
+   },
+   "field_diffs": [],
+   "got": {
+    "earliest_height": 972145,
+    "proof_heights": [
+     972140,
+     972145
+    ],
+    "result": "anchored",
+    "set_checked": true,
+    "verified_heights": [
+     972145
+    ]
+   },
+   "id": "AP-27",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {
+    "verified_heights": [
+     972145
+    ]
+   },
+   "supplemental_fields": [
+    "verified_heights"
+   ]
+  },
+  {
+   "compared_fields": [
+    "result",
+    "set_checked"
+   ],
+   "contract_errors": [],
+   "expected": {
+    "result": "select_out_of_range",
+    "set_checked": false
+   },
+   "field_diffs": [],
+   "got": {
+    "result": "select_out_of_range",
+    "set_checked": false
+   },
+   "id": "AP-28",
+   "match": true,
+   "supplemental_diffs": [],
+   "supplemental_expected": {},
+   "supplemental_fields": []
+  }
+ ],
+ "vectors_file": "vectors.json",
+ "vectors_label": "draft 1.1",
+ "vectors_sha256": "0b0b3efb16d230825610ad7cf501ecc0a0bfdaa3d6f182c6e2446957e22fef84"
+}

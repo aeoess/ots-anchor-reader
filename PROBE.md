@@ -49,3 +49,11 @@ P3 rewritten proof, 972141's real root supplied under the key 972140: ok
 For contrast, the draft 1 version of this reader (not in this repository) returned
 `{"set_checked": true, "result": "anchored", "earliest_height": 972140, "bitcoin_heights_in_proof": [972140, 972145]}`
 on P1.
+
+## Draft 1.2 note
+
+The outputs above are the draft 1.1 record, left as published. Under the draft 1.2 reader in this repository the
+only change is on P2, which now also reports `proof_heights: [972140, 972145]` on `root_mismatch`: draft 1.2's AP-29
+expects `proof_heights` on a `root_mismatch` result, and this repository reports it on every result from step 11 on
+(interpretation I6 in the README). P1 and P3 are unchanged. `probe-1.2.log` is the run on `vectors-1.2/vectors.json`;
+the same run on `vectors/vectors.json` gives identical output, since AP-23, AP-24 and AP-27 are the same in both files.

@@ -52,7 +52,8 @@ def main():
          {"result": "anchored", "earliest_height": 972145, "verified_heights": [972145],
           "proof_heights": [972140, 972145], "set_checked": True}),
         ("P2 rewritten proof, wrong root supplied for 972140", {"972145": root_972145, "972140": "00" * 32},
-         {"result": "root_mismatch", "failed_height": 972140, "set_checked": True}),
+         {"result": "root_mismatch", "failed_height": 972140, "proof_heights": [972140, 972145],
+          "set_checked": True}),  # proof_heights on root_mismatch: draft 1.2 AP-29, this repo's I6
         ("P3 rewritten proof, 972141's real root supplied under the key 972140",
          {"972145": root_972145, "972140": root_972141},
          {"result": "anchored", "earliest_height": 972140, "verified_heights": [972140, 972145],

@@ -1,22 +1,25 @@
-"""Run reader.py over the anchor pointer draft 1.1 vectors and write a results file.
+"""Run reader.py over the anchor pointer draft 1.2 (or 1.1) vectors and write a results file.
 
 Usage: python3 -I run_all.py <vectors.json> <out results.json> [<supplemental.json>]
 
 For every vector, every field in its `expected` object is compared with the reader's
 output, type-sensitive (true is not 1, 972141 is not "972141", list order counts). An
 expected field the reader does not return is a failure. An expected field outside the
-draft 1.1 output contract is a failure. A bare-string `expected` means {"result": ...}.
+draft 1.2 output contract is a failure. A bare-string `expected` means {"result": ...}.
+A vector without `proof_bytes` is run with no proof (draft 1.2 AP-30).
 
-supplemental.json (next to this file unless a path is given) holds assertions this
-repository wrote itself, not the draft. They pin set_checked, proof_heights,
-verified_heights and failed_height where the vectors leave them unpinned and the draft
-1.1 rule fixes the value. They are reported apart from the draft's expected fields.
+The supplemental file (supplemental.json next to this file unless a path is given) holds
+assertions this repository wrote itself, not the draft. They pin set_checked,
+proof_heights, verified_heights and failed_height where the vectors leave them unpinned
+and the draft rule fixes the value. They are reported apart from the draft's expected
+fields.
 
-Structural checks run on every vector as well: allowed fields and types, anchored-only
-fields only on anchored, failed_height only on root_mismatch. On anchored, proof_heights
-must equal the Bitcoin attestation heights found by scan_heights() in the proof bytes,
-which does not use reader.py, and verified_heights must be those heights that had a
-root supplied.
+Structural checks run on every vector as well: allowed fields and types, earliest_height
+and verified_heights only on anchored, failed_height only on root_mismatch, proof_heights
+exactly on height_not_in_proof, header_unavailable, root_mismatch and anchored (I6).
+Wherever proof_heights appears it must equal the Bitcoin attestation heights found by
+scan_heights() in the proof bytes, which does not use reader.py. On anchored,
+verified_heights must be those heights that had a root supplied.
 
 Exit 0 when every vector matches and passes the contract and every blob hash matches,
 1 otherwise.
@@ -33,8 +36,9 @@ import reader  # noqa: E402
 
 CONTRACT_FIELDS = ("result", "set_checked", "earliest_height", "verified_heights",
                    "proof_heights", "failed_height")
-ANCHORED_ONLY = ("earliest_height", "verified_heights", "proof_heights")
-RESULT_CODES = tuple(reader.ORDER) + ("evm_log_needs_rpc",)
+ANCHORED_ONLY = ("earliest_height", "verified_heights")
+PROOF_HEIGHTS_ON = ("height_not_in_proof", "header_unavailable", "root_mismatch", "anchored")
+RESULT_CODES = tuple(reader.ORDER)
 MISSING = object()
 BTC_ATTESTATION = b"\x00" + bytes.fromhex("0588960d73d71901")
 
@@ -88,18 +92,27 @@ def contract_errors(got, headers, proof):
     if not isinstance(got.get("set_checked"), bool):
         e.append("set_checked not a bool")
     r = got.get("result")
+
+    def height_list(name):
+        lst = got.get(name)
+        if not (isinstance(lst, list) and lst and all(is_int(x) for x in lst)
+                and lst == sorted(set(lst))):
+            e.append("%s not a non-empty ascending list of distinct ints" % name)
+            return None
+        return lst
+
+    scanned = scan_heights(proof) if proof is not None else []
+    if r in PROOF_HEIGHTS_ON:
+        ph = height_list("proof_heights")
+        if ph is not None and ph != scanned:
+            e.append("proof_heights %s, the proof bytes name %s" % (ph, scanned))
+    elif "proof_heights" in got:
+        e.append("proof_heights present on %s" % r)
     if r == "anchored":
-        eh, vh, ph = got.get("earliest_height"), got.get("verified_heights"), got.get("proof_heights")
-        for name, lst in (("verified_heights", vh), ("proof_heights", ph)):
-            if not (isinstance(lst, list) and lst and all(is_int(x) for x in lst)
-                    and lst == sorted(set(lst))):
-                e.append("%s not a non-empty ascending list of distinct ints" % name)
-        if not e:
+        eh, vh = got.get("earliest_height"), height_list("verified_heights")
+        if vh is not None:
             if not is_int(eh) or eh != vh[0]:
                 e.append("earliest_height is not the smallest verified height")
-            scanned = scan_heights(proof) if proof is not None else []
-            if ph != scanned:
-                e.append("proof_heights %s, the proof bytes name %s" % (ph, scanned))
             want_v = [h for h in scanned if str(h) in headers]
             if vh != want_v:
                 e.append("verified_heights %s, expected every proof height with a supplied "
@@ -122,7 +135,7 @@ def compare(exp, got):
     for k in sorted(exp):
         if k not in CONTRACT_FIELDS:
             diffs.append({"field": k, "expected": exp[k], "got": got.get(k, "<absent>"),
-                          "why": "expected field outside the draft 1.1 contract"})
+                          "why": "expected field outside the draft 1.2 contract"})
         elif got.get(k, MISSING) is MISSING:
             diffs.append({"field": k, "expected": exp[k], "got": "<absent>", "why": "missing"})
         elif not jeq(got[k], exp[k]):
@@ -181,6 +194,7 @@ def main():
         "vectors_sha256": hashlib.sha256(raw).hexdigest(),
         "vectors_label": d.get("anchor_pointer_vectors"),
         "python": platform.python_version(),
+        "supplemental_file": os.path.basename(supp_path),
         "supplemental_sha256": hashlib.sha256(supp_raw).hexdigest(),
         "supplemental_errors": supp_errors,
         "supplemental_field_count": sum(len(r["supplemental_fields"]) for r in rows),
@@ -193,8 +207,8 @@ def main():
         f.write("\n")
     print("vectors %s sha256 %s (%s)" % (res["vectors_file"], res["vectors_sha256"], res["vectors_label"]))
     print("reader.py sha256 %s, Python %s" % (res["reader_sha256"], res["python"]))
-    print("supplemental.json sha256 %s, %d assertions (ours, not the draft's)" % (
-        res["supplemental_sha256"], res["supplemental_field_count"]))
+    print("%s sha256 %s, %d assertions (ours, not the draft's)" % (
+        res["supplemental_file"], res["supplemental_sha256"], res["supplemental_field_count"]))
     for r in rows:
         g = r["got"]
         print("%-6s %-4s result=%-22s compared=%s supplemental=%s" % (

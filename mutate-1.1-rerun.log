@@ -1,0 +1,51 @@
+vectors vectors/vectors.json (draft 1.1), supplemental supplemental.json
+# 1. draft expected fields
+vector   field             mutated to             exit  runner says
+AP-26    failed_height     972145                 1     DIFF failed_height: expected 972145 got 972141 (differs)  [caught] failed_height: the claimed block instead of the failing one
+AP-26    failed_height     "972141"               1     DIFF failed_height: expected "972141" got 972141 (differs)  [caught] failed_height: right number as a string (type)
+AP-27    proof_heights     [972145]               1     DIFF proof_heights: expected [972145] got [972140, 972145] (differs)  [caught] proof_heights: the rewritten height dropped
+AP-27    proof_heights     [972145, 972140]       1     DIFF proof_heights: expected [972145, 972140] got [972140, 972145] (differs)  [caught] proof_heights: right members, wrong order
+AP-25    verified_heights  [972145]               1     DIFF verified_heights: expected [972145] got [972141, 972145] (differs); SUPP DIFF verified_heights: expected [972141, 972145] got [972145] (supplemental contradicts the draft's expected value)  [caught] verified_heights added: only the claimed block
+AP-24    verified_heights  [972141, 972145]       1     DIFF verified_heights: expected [972141, 972145] got [972145] (differs); SUPP DIFF verified_heights: expected [972145] got [972141, 972145] (supplemental contradicts the draft's expected value)  [caught] verified_heights added: unverified height included
+AP-28    set_checked       true                   1     DIFF set_checked: expected true got false (differs)  [caught] set_checked: true after a select error
+AP-28    set_checked       0                      1     DIFF set_checked: expected 0 got false (differs)  [caught] set_checked: 0 instead of false (type)
+AP-01    set_checked       false                  1     DIFF set_checked: expected false got true (differs)  [caught] set_checked: false when the comparison ran
+AP-24    earliest_height   972141                 1     DIFF earliest_height: expected 972141 got 972145 (differs)  [caught] earliest_height: the draft 1 unverified bound
+AP-27    earliest_height   972140                 1     DIFF earliest_height: expected 972140 got 972145 (differs)  [caught] earliest_height: the probe's rewritten height
+AP-01    result            "root_mismatch"        1     DIFF result: expected "root_mismatch" got "anchored" (differs)  [caught] result code on an object expected
+AP-13    result            "header_unavailable"   1     DIFF result: expected "header_unavailable" got "root_mismatch" (differs)  [caught] result code on a bare-string expected
+AP-28    result            "proof_sha_mismatch"   1     DIFF result: expected "proof_sha_mismatch" got "select_out_of_range" (differs)  [caught] result: AP-28's second fault, wrong order
+AP-23    failed_height     972141                 1     DIFF failed_height: expected 972141 got "<absent>" (missing)  [caught] failed_height added on an anchored vector
+AP-15    earliest_heigth   972677                 1     DIFF earliest_heigth: expected 972677 got "<absent>" (expected field outside the draft 1.2 contract)  [caught] misspelled field outside the contract
+AP-29    result            "anchored"             -     skipped, vector not in this file  I1: the any-attestation reading (draft 1.1 reader's answer)
+AP-29    proof_heights     [972141, 972145]       -     skipped, vector not in this file  I1: the untampered proof's heights
+AP-29    failed_height     972145                 -     skipped, vector not in this file  I1: the height that was rewritten away
+AP-30    result            "proof_sha_mismatch"   -     skipped, vector not in this file  I3: the draft 1.1 reader's answer
+AP-30    set_checked       false                  -     skipped, vector not in this file  I3: set_checked false though the comparison ran
+AP-31    result            "malformed"            -     skipped, vector not in this file  I5: the draft 1.1 reader's answer
+# 2. supplemental.json assertions (ours)
+AP-25    verified_heights  [972145]               1     SUPP DIFF verified_heights: expected [972145] got [972141, 972145] (differs)  [caught] our pin: AP-25 verified_heights without 972141
+AP-25    proof_heights     [972141]               1     SUPP DIFF proof_heights: expected [972141] got [972141, 972145] (differs)  [caught] our pin: AP-25 proof_heights without 972145
+AP-06    set_checked       false                  1     SUPP DIFF set_checked: expected false got true (differs)  [caught] our pin: set_checked false after the comparison ran
+AP-02    set_checked       true                   1     SUPP DIFF set_checked: expected true got false (differs)  [caught] our pin: set_checked true on malformed
+AP-13    failed_height     972228                 1     SUPP DIFF failed_height: expected 972228 got 972227 (differs)  [caught] our pin: failed_height off by one
+AP-01    set_checked       false                  1     SUPP DIFF set_checked: expected false got true (differs); SUPP DIFF set_checked: expected false got true (supplemental contradicts the draft's expected value)  [caught] our pin contradicting a field the draft already pins
+AP-26    proof_heights     [972141]               1     SUPP DIFF proof_heights: expected [972141] got [972141, 972145] (differs)  [caught] our I6 pin: proof_heights on root_mismatch without 972145
+AP-11    proof_heights     [972228]               1     SUPP DIFF proof_heights: expected [972228] got [972227] (differs)  [caught] our I6 pin: the claimed height instead of the proof's
+# 3. reader.py mutants
+R1       exit 1, failing AP-06,AP-16,AP-17, without supplemental exit 0  [caught] review mutant: set_checked forced false on set_digest_mismatch
+         AP-06 SUPP DIFF set_checked: expected true got false (differs)
+R2       exit 1, failing AP-25, without supplemental exit 1  [caught] review mutant: AP-25 height lists reduced to the minimum
+         AP-25 SUPP DIFF verified_heights: expected [972141, 972145] got [972141] (differs)
+         AP-25 CONTRACT verified_heights [972141], expected every proof height with a supplied header [972141, 972145]
+R3       exit 1, failing AP-02,AP-03,AP-04,AP-20,AP-21,AP-22, without supplemental exit 0  [caught] set_checked true on malformed
+         AP-02 SUPP DIFF set_checked: expected false got true (differs)
+R4       skipped, AP-29 not in this file  I1 reverted: any attestation at the height may match
+R5       skipped, AP-30 not in this file  I3 missing: no proof bytes treated as empty proof bytes
+R6       skipped, AP-31 not in this file  I5 reverted: an index member shape-checked for every select kind
+R7       skipped, AP-29 not in this file  I6: proof_heights dropped from root_mismatch
+# 4. reader.py mutants no vector pins (information only)
+X1       exit 0, failing none  [not caught] I4: evm-log accepted at step 2 (no well-formed evm-log vector exists offline)
+# controls
+control  -                 null                   0     passed 28/28, blob errors none  [pass] unmodified copy
+AP-25    verified_heights  [972141, 972145]       0     passed 28/28, blob errors none  [pass] verified_heights added with the right value

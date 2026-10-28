@@ -1,0 +1,308 @@
+{
+ "about": "Assertions written by this repository (aeoess), not by the anchor pointer draft or its author. They pin output fields that the draft 1.2 vectors leave unpinned, where the draft 1.2 README rule, or this repository's stated interpretation I6, fixes the value. Each value was worked out by hand from the vector inputs and the rule quoted in `rule`, not copied from reader output. vectors-1.2/vectors.json is unchanged. The draft 1.1 file supplemental.json is kept as the record of the 2d721cb run.",
+ "assertions": {
+  "AP-01": {
+   "expected": {
+    "proof_heights": [
+     972227
+    ],
+    "verified_heights": [
+     972227
+    ]
+   },
+   "why": {
+    "proof_heights": "one attestation, 972227, header supplied",
+    "verified_heights": "one attestation, 972227, header supplied"
+   }
+  },
+  "AP-02": {
+   "expected": {
+    "set_checked": false
+   },
+   "why": {
+    "set_checked": "false: stopped at step 1 (malformed), before the step 5 comparison"
+   }
+  },
+  "AP-03": {
+   "expected": {
+    "set_checked": false
+   },
+   "why": {
+    "set_checked": "false: stopped at step 1 (malformed), before the step 5 comparison"
+   }
+  },
+  "AP-04": {
+   "expected": {
+    "set_checked": false
+   },
+   "why": {
+    "set_checked": "false: stopped at step 1 (malformed), before the step 5 comparison"
+   }
+  },
+  "AP-05": {
+   "expected": {
+    "set_checked": false
+   },
+   "why": {
+    "set_checked": "false: stopped at step 2 (unsupported_mechanism), before the step 5 comparison"
+   }
+  },
+  "AP-06": {
+   "expected": {
+    "set_checked": true
+   },
+   "why": {
+    "set_checked": "true: anchored_set present, resource supplied, no select error, so the step 5 comparison ran"
+   }
+  },
+  "AP-07": {
+   "expected": {
+    "set_checked": true
+   },
+   "why": {
+    "set_checked": "true: anchored_set present, resource supplied, no select error, so the step 5 comparison ran"
+   }
+  },
+  "AP-08": {
+   "expected": {
+    "set_checked": true
+   },
+   "why": {
+    "set_checked": "true: anchored_set present, resource supplied, no select error, so the step 5 comparison ran"
+   }
+  },
+  "AP-09": {
+   "expected": {
+    "set_checked": true
+   },
+   "why": {
+    "set_checked": "true: anchored_set present, resource supplied, no select error, so the step 5 comparison ran"
+   }
+  },
+  "AP-10": {
+   "expected": {
+    "set_checked": true
+   },
+   "why": {
+    "set_checked": "true: anchored_set present, resource supplied, no select error, so the step 5 comparison ran"
+   }
+  },
+  "AP-11": {
+   "expected": {
+    "proof_heights": [
+     972227
+    ],
+    "set_checked": true
+   },
+   "why": {
+    "proof_heights": "one attestation, at 972227; I6 reports proof_heights on this result (claimed 972228 is not in it)",
+    "set_checked": "true: anchored_set present, resource supplied, no select error, so the step 5 comparison ran"
+   }
+  },
+  "AP-12": {
+   "expected": {
+    "proof_heights": [
+     972227
+    ],
+    "set_checked": true
+   },
+   "why": {
+    "proof_heights": "one attestation, at 972227; I6 reports proof_heights on this result (no header supplied for it)",
+    "set_checked": "true: anchored_set present, resource supplied, no select error, so the step 5 comparison ran"
+   }
+  },
+  "AP-13": {
+   "expected": {
+    "failed_height": 972227,
+    "proof_heights": [
+     972227
+    ],
+    "set_checked": true
+   },
+   "why": {
+    "failed_height": "one attestation, at the claimed block, wrong root supplied",
+    "proof_heights": "one attestation, at 972227; I6 reports proof_heights on this result",
+    "set_checked": "true: anchored_set present, resource supplied, no select error, so the step 5 comparison ran"
+   }
+  },
+  "AP-14": {
+   "expected": {
+    "failed_height": 972227,
+    "proof_heights": [
+     972227
+    ],
+    "set_checked": true
+   },
+   "why": {
+    "failed_height": "one attestation, at the claimed block, proof altered so it no longer reaches the supplied root",
+    "proof_heights": "one attestation, at 972227; I6 reports proof_heights on this result (the flipped byte is in an append argument, not in the height)",
+    "set_checked": "true: anchored_set present, resource supplied, no select error, so the step 5 comparison ran"
+   }
+  },
+  "AP-15": {
+   "expected": {
+    "proof_heights": [
+     972677
+    ],
+    "verified_heights": [
+     972677
+    ]
+   },
+   "why": {
+    "proof_heights": "one attestation, 972677, header supplied",
+    "verified_heights": "one attestation, 972677, header supplied"
+   }
+  },
+  "AP-16": {
+   "expected": {
+    "set_checked": true
+   },
+   "why": {
+    "set_checked": "true: anchored_set present, resource supplied, no select error, so the step 5 comparison ran"
+   }
+  },
+  "AP-17": {
+   "expected": {
+    "set_checked": true
+   },
+   "why": {
+    "set_checked": "true: anchored_set present, resource supplied, no select error, so the step 5 comparison ran"
+   }
+  },
+  "AP-18": {
+   "expected": {
+    "set_checked": false
+   },
+   "why": {
+    "set_checked": "false: stopped at a select error, which the draft names as a false case"
+   }
+  },
+  "AP-19": {
+   "expected": {
+    "set_checked": false
+   },
+   "why": {
+    "set_checked": "false: stopped at a select error, which the draft names as a false case"
+   }
+  },
+  "AP-20": {
+   "expected": {
+    "set_checked": false
+   },
+   "why": {
+    "set_checked": "false: no resource given and anchored_set absent, both named by the draft as false cases"
+   }
+  },
+  "AP-21": {
+   "expected": {
+    "set_checked": false
+   },
+   "why": {
+    "set_checked": "false: no resource given and anchored_set absent, both named by the draft as false cases"
+   }
+  },
+  "AP-22": {
+   "expected": {
+    "set_checked": false
+   },
+   "why": {
+    "set_checked": "false: no resource given and anchored_set absent, both named by the draft as false cases"
+   }
+  },
+  "AP-23": {
+   "expected": {
+    "proof_heights": [
+     972141,
+     972145
+    ],
+    "verified_heights": [
+     972141
+    ]
+   },
+   "why": {
+    "proof_heights": "attestations at 972141 and 972145, header supplied for 972141 only",
+    "verified_heights": "attestations at 972141 and 972145, header supplied for 972141 only"
+   }
+  },
+  "AP-24": {
+   "expected": {
+    "proof_heights": [
+     972141,
+     972145
+    ],
+    "verified_heights": [
+     972145
+    ]
+   },
+   "why": {
+    "proof_heights": "attestations at 972141 and 972145, header supplied for 972145 only",
+    "verified_heights": "attestations at 972141 and 972145, header supplied for 972145 only"
+   }
+  },
+  "AP-25": {
+   "expected": {
+    "proof_heights": [
+     972141,
+     972145
+    ],
+    "verified_heights": [
+     972141,
+     972145
+    ]
+   },
+   "why": {
+    "proof_heights": "attestations at 972141 and 972145, headers supplied for both and both match",
+    "verified_heights": "attestations at 972141 and 972145, headers supplied for both and both match"
+   }
+  },
+  "AP-26": {
+   "expected": {
+    "proof_heights": [
+     972141,
+     972145
+    ],
+    "set_checked": true
+   },
+   "why": {
+    "proof_heights": "attestations at 972141 and 972145; I6 reports proof_heights on root_mismatch",
+    "set_checked": "true: anchored_set present, resource supplied, no select error, so the step 5 comparison ran"
+   }
+  },
+  "AP-27": {
+   "expected": {
+    "verified_heights": [
+     972145
+    ]
+   },
+   "why": {
+    "verified_heights": "attestations at 972140 (rewritten) and 972145, header supplied for 972145 only. proof_heights is already pinned by the draft"
+   }
+  },
+  "AP-29": {
+   "expected": {},
+   "why": {
+    "_": "every output field (result, set_checked, failed_height, proof_heights) is pinned by the draft; verified_heights and earliest_height are not reported on root_mismatch"
+   }
+  },
+  "AP-30": {
+   "expected": {},
+   "why": {
+    "_": "result and set_checked are pinned by the draft; no other field is reported before step 11"
+   }
+  },
+  "AP-31": {
+   "expected": {},
+   "why": {
+    "_": "result and set_checked are pinned by the draft; no other field is reported before step 11"
+   }
+  }
+ },
+ "draft": "anchor pointer draft 1.2, aos-standard/catalog 53e44de0584d6d85365b774408575486561c90e7",
+ "rule": {
+  "failed_height": "draft 1.2 README: root_mismatch checks the claimed block first, every attestation at a height must match, and the result names failed_height",
+  "proof_heights": "draft 1.2 README: proof_heights lists every height the proof names, ascending, distinct, as in AP-27. AP-29 expects it on root_mismatch. This repository's I6 reports it on every result from step 11 on (height_not_in_proof, header_unavailable, root_mismatch, anchored), so it is pinned on those vectors too",
+  "set_checked": "draft 1.2 README (unchanged from 1.1): true only when the digest comparison ran: false when no resource was given, when anchored_set is absent, and when the reader stopped at a select error. Steps 3 to 5 come after steps 1 and 2. This file reads 'true only when' as 'true exactly when', as the draft's own anchored vectors do",
+  "verified_heights": "draft 1.2 README (unchanged from 1.1): the reader verifies the claimed block and every other attestation whose header it was given. On anchored every supplied header matched, so this is every proof height with a supplied header, ascending"
+ },
+ "vectors_sha256": "00a75863556c158ad05fb39459797501824ac4bb786223211f8e6c5cdc2e2fbd"
+}

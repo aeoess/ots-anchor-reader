@@ -1,36 +1,45 @@
-"""Clean-room reader for anchor pointer draft 1.1 (mechanism opentimestamps, chain bitcoin;
-evm-log shape checks only). Python 3 standard library only.
+"""Clean-room reader for anchor pointer draft 1.2 (mechanism opentimestamps, chain bitcoin).
+Python 3 standard library only.
 
-Written from the draft 0, draft 1 and draft 1.1 README text and vector files
-(aos-standard/catalog 5294818, docs/runs/anchor-pointer-draft1.1/), and from the public
+Written from the draft 0, draft 1, draft 1.1 and draft 1.2 README text and vector files
+(aos-standard/catalog 53e44de, docs/runs/anchor-pointer-draft1.2/), and from the public
 OpenTimestamps serialization format, recalled from memory, not copied. The catalog's own
 checker was not read.
 
-First failure is the result, in this order (draft 1.1 README, "Check order"):
+First failure is the result, in this order (draft 1.2 README, "Check order"):
 
   1 malformed  2 unsupported_mechanism  3 unsupported_select  4 select_out_of_range
   5 set_digest_mismatch  (3 to 5 only when anchored_set is present and the resource was given)
   opentimestamps:
-  6 proof_sha_mismatch  7 proof_unparseable  8 proof_for_other_digest  9 pending
-  10 height_not_in_proof  11 header_unavailable
-  12 root_mismatch: the claimed block first, then every other attestation height with a
-     supplied header, lowest first. The result carries failed_height.
-  13 anchored, with earliest_height (smallest verified height), verified_heights and
+  6 proof_unavailable  7 proof_sha_mismatch  8 proof_unparseable  9 proof_for_other_digest
+  10 pending  11 height_not_in_proof  12 header_unavailable
+  13 root_mismatch: the claimed block first, then every other attestation height with a
+     supplied header, lowest first. Every attestation at a height must match. The result
+     carries failed_height.
+  14 anchored, with earliest_height (smallest verified height), verified_heights and
      proof_heights.
 
 Every result carries set_checked: true only when the step 5 digest comparison ran.
 
-Interpretations where the README is silent (see README.md of this repo, "Interpretations"):
+Draft 1.2 settles the four points draft 1.1 left open (this repository's I1, I3, I4, I5):
   I1  A height is verified only if every bitcoin attestation at that height in the proof
-      matches the supplied root.
+      matches the supplied root (draft 1.2 text, AP-29).
+  I3  An opentimestamps pointer with no proof bytes supplied is proof_unavailable, step 6,
+      after the step 5 comparison (draft 1.2 text, AP-30).
+  I4  unsupported_mechanism means "this reader does not read this mechanism", whether or not
+      the draft defines it. This reader reads opentimestamps only, so a well-formed evm-log
+      pointer is unsupported_mechanism at step 2. Step 1 still applies the draft's evm-log
+      shape rules (AP-20 to AP-22 expect malformed).
+  I5  A select of a kind this reader does not implement is shape-checked only for `kind`
+      being a string; its other members are not inspected; unsupported_select at step 3
+      (draft 1.2 text, AP-31).
+
+Interpretations where the draft 1.2 text is still silent (README.md, "Interpretations"):
   I2  Supplied roots are compared in display byte order (as block explorers print them)
       against the attestation message reversed, case-insensitive.
-  I3  An opentimestamps pointer with no proof bytes supplied raises ValueError: the draft
-      defines no result code for it.
-  I4  A well-formed evm-log pointer that passes steps 1 to 5 returns evm_log_needs_rpc, which
-      is not a draft result code. This reader does not verify EVM logs.
-  I5  A select of an unknown kind is not shape-checked beyond `kind` being a string, so it
-      reaches unsupported_select rather than malformed.
+  I6  proof_heights is reported on every result reached once the proof's bitcoin heights are
+      known: height_not_in_proof, header_unavailable, root_mismatch and anchored. The draft
+      1.2 README lists it under anchored only, and AP-29 expects it on root_mismatch.
 """
 import hashlib
 import re
@@ -41,6 +50,7 @@ ORDER = [
     "unsupported_select",
     "select_out_of_range",
     "set_digest_mismatch",
+    "proof_unavailable",
     "proof_sha_mismatch",
     "proof_unparseable",
     "proof_for_other_digest",
@@ -55,7 +65,7 @@ HEX64 = re.compile(r"^[0-9a-f]{64}$")
 EVM_ADDR = re.compile(r"^0x[0-9a-fA-F]{40}$")
 EVM_TX = re.compile(r"^0x[0-9a-fA-F]{64}$")
 CAIP2_EIP155 = re.compile(r"^eip155:[0-9]+$")
-KNOWN_MECHANISMS = ("opentimestamps", "evm-log")
+IMPLEMENTED_MECHANISMS = ("opentimestamps",)  # step 2 (I4): what this reader reads
 KNOWN_SELECT_KINDS = ("line",)
 
 
@@ -230,7 +240,7 @@ def _shape_error(p):
             if sel["kind"] == "line":
                 if not _is_int(sel.get("index")) or sel["index"] < 0:
                     return "select.index"
-            # unknown kinds: fields not validated here (I5)
+            # kinds this reader does not implement: other members not inspected (I5)
     if mech == "opentimestamps":
         pr = p.get("proof")
         if not isinstance(pr, dict) or not isinstance(pr.get("locator"), str) \
@@ -240,7 +250,7 @@ def _shape_error(p):
             return "claimed.chain"
         if not _is_int(c.get("height")) or c["height"] < 0:
             return "claimed.height"
-    elif mech == "evm-log":
+    elif mech == "evm-log":  # step 1 applies the draft's evm-log shape rules (AP-20 to AP-22)
         if "proof" in p:
             return "evm-log has no proof"
         if not isinstance(c.get("chain"), str) or not CAIP2_EIP155.match(c["chain"]):
@@ -277,8 +287,8 @@ def _root_matches(msg, root_hex):
 
 
 def check(pointer, anchored_bytes=None, proof_bytes=None, headers=None):
-    """Return a dict with result and set_checked, plus failed_height on root_mismatch and
-    earliest_height, verified_heights, proof_heights on anchored."""
+    """Return a dict with result and set_checked, plus failed_height on root_mismatch,
+    proof_heights from step 11 on (I6) and earliest_height, verified_heights on anchored."""
     headers = headers or {}
     out = {"set_checked": False}
 
@@ -291,8 +301,8 @@ def check(pointer, anchored_bytes=None, proof_bytes=None, headers=None):
     if _shape_error(pointer) is not None:
         return done("malformed")
     mech = pointer["mechanism"]
-    if mech not in KNOWN_MECHANISMS:
-        return done("unsupported_mechanism")
+    if mech not in IMPLEMENTED_MECHANISMS:
+        return done("unsupported_mechanism")  # I4: evm-log included, this reader does not read it
 
     # 3 to 5, only when anchored_set is present and the resource was supplied
     aset = pointer.get("anchored_set")
@@ -309,12 +319,9 @@ def check(pointer, anchored_bytes=None, proof_bytes=None, headers=None):
         if hashlib.sha256(selected).hexdigest() != pointer["anchored_digest"]["hex"]:
             return done("set_digest_mismatch")
 
-    if mech == "evm-log":
-        return done("evm_log_needs_rpc")  # I4
-
-    # opentimestamps, 6 to 13
+    # opentimestamps, 6 to 14
     if proof_bytes is None:
-        raise ValueError("opentimestamps pointer without proof bytes: no draft 1.1 result (I3)")
+        return done("proof_unavailable")  # I3
     if hashlib.sha256(proof_bytes).hexdigest() != pointer["proof"]["sha256"]:
         return done("proof_sha_mismatch")
     try:
@@ -327,6 +334,7 @@ def check(pointer, anchored_bytes=None, proof_bytes=None, headers=None):
     if not btc:
         return done("pending")
     proof_heights = sorted(set(h for h, _ in btc))
+    out["proof_heights"] = proof_heights  # I6: reported from here on
     claimed = pointer["claimed"]["height"]
     if claimed not in proof_heights:
         return done("height_not_in_proof")
@@ -335,8 +343,7 @@ def check(pointer, anchored_bytes=None, proof_bytes=None, headers=None):
     to_verify = [claimed] + [h for h in proof_heights if h != claimed and str(h) in headers]
     for h in to_verify:
         root = headers[str(h)]
-        if not all(_root_matches(m, root) for hh, m in btc if hh == h):  # I1
+        if not all(_root_matches(m, root) for hh, m in btc if hh == h):  # I1: every attestation
             return done("root_mismatch", failed_height=h)
     verified = sorted(to_verify)
-    return done("anchored", earliest_height=verified[0], verified_heights=verified,
-                proof_heights=proof_heights)
+    return done("anchored", earliest_height=verified[0], verified_heights=verified)
